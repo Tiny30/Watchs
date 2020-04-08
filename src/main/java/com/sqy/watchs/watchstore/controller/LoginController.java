@@ -14,7 +14,12 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/user")
-
+/**
+ *  功能：登入登出，返回json格式
+ *  方法：loginIn(),loginOut()
+ *  作者：
+ *  日期：2020.3.20
+ */
 public class LoginController extends HoshiController {
     @Autowired
     private UserService userService;
@@ -22,7 +27,7 @@ public class LoginController extends HoshiController {
     @PostMapping("/register")
     public RespData<User> register(@RequestBody User user) {
         return $(resp -> {
-            List<User> users = userService.listBySearch(user.getId());
+            List<User> users = userService.getByAccount(user.getAccount());
             if (HStream.count(users) > 0) {
                 resp.success(false).msg("该账号已存在");
             } else {
@@ -49,14 +54,14 @@ public class LoginController extends HoshiController {
     @PostMapping("/login")
     public RespData<User> login(@RequestBody User user) {
         return $(resp -> {
-            List<User> users = userService.listBySearch(user.getId());
+            List<User> users = userService.getByAccount(user.getAccount());
             if (HStream.count(users) != 1) {
                 resp.success(false).msg("用户名或者密码错误");
             } else {
                 //从数据库查询出来的用户
                 User temp = users.get(0);
                 //md5加密客户端密码
-                String clientPwd = DigestUtils.md5DigestAsHex(user.getPassword().getBytes());
+                String clientPwd = DigestUtils.md5DigestAsHex(user.getPassword().getBytes()) ;
                 //对比加密后的密码是否一致
                 boolean equals = Objects.equals(temp.getPassword(), clientPwd);
                 if (equals) {

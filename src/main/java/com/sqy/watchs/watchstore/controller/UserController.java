@@ -31,13 +31,14 @@ public class UserController extends HoshiController {
             if (id == null && id.equals("")) {
                 RespData.succeed(false).msg("添加失败");
             } else {
-                RespData.succeed(false).msg("添加成功");
+                RespData.succeed(true).data(true).msg("添加成功");
             }
         });
     }
 
     /**
      * 根据ID删除用户
+     *
      * @param id
      * @return
      */
@@ -48,41 +49,46 @@ public class UserController extends HoshiController {
                 booleanRespData.success(false).msg("未发现该ID");
             } else {
                 userService.removeById(id);
-                booleanRespData.success(true).msg("已删除");
+                booleanRespData.success(true).data(true).msg("已删除");
             }
         });
     }
 
     /**
      * 根据id更改密码
+     *
      * @param user
      * @return
      */
     @PutMapping("/updatePwd")
     public RespData<Boolean> updatePwd(User user) {
         return $(booleanRespData -> {
-            if(user.getId() == null && user.getId().equals(" ")){
+            if (user.getId() == null && user.getId().equals(" ")) {
                 RespData.succeed(false).msg("未找到更新ID");
-            }else {
-               User byID =  userService.getById(user.getId());
-               byID.setPassword(user.getPassword());
+            } else {
+                User byID = userService.getById(user.getId());
+                byID.setPassword(user.getPassword());
+                userService.updateById(byID);
+                RespData.succeed(false).data(true).msg("更新成功");
             }
         });
     }
 
     /**
      * 地址管理：更改地址
+     *
      * @param user,,..
      * @return
      */
-    public RespData<Boolean> adress(User user){
+    public RespData<Boolean> adress(User user) {
         return $(booleanRespData -> {
-            if(user.getId() == null && user.getId().equals(" ")){
+            if (user.getId() == null && user.getId().equals(" ")) {
                 RespData.succeed(false).msg("未找到更新ID");
-            }else {
-                User byID =  userService.getById(user.getId());
+            } else {
+                User byID = userService.getById(user.getId());
                 byID.setAdress(user.getAdress());
-                userService.update()
+                userService.updateById(byID);
+                RespData.succeed(false).data(true).msg("更新成功");
             }
         });
     }
@@ -96,7 +102,7 @@ public class UserController extends HoshiController {
      * @author：SQY
      * @Date:2020.4.8
      */
-    @GetMapping("/listBySearch")
+    @GetMapping("/listBySearch/{pageIndex}/{pageSize}")
     public RespData<List<User>> listBySearch(@RequestParam(name = "search", required = false, defaultValue = "") String key,
                                              @PathVariable int pageIndex, @PathVariable int pageSize) {
 

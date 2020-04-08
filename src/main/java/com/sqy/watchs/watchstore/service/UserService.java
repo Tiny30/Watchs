@@ -7,4 +7,8 @@ import java.util.List;
 
 public interface UserService extends IService<User> {
     List<User> listBySearch(String key);
+    /***
+     * 根据账号查询用户信息
+     */
+    List<User> getByAccount(String account);
 }

@@ -7,13 +7,13 @@ import java.util.Date;
 
 public class User {
 
-//    /**
-//     * 用户角色
-//     */
-//    public interface Role{
-//        String ADMIN = "admin" ;
-//        String USER = "user" ;
-//    }
+    /**
+     * 用户角色
+     */
+    public interface Role{
+        String ADMIN = "admin" ;
+        String USER = "user" ;
+    }
 
     /**
      * 唯一标识
@@ -26,26 +26,30 @@ public class User {
      */
     private String name ;
 
-   /* *//**
+    /**
      * 用户账号 用于登录
-     *//*
-    private String account ;*/
+     * */
+
+    private String account ;
 
     /**
      * 用户密码
      */
     private String password ;
 
-   /* *//**
-     * 用户角色
-     *//*
+   /* *
+     * 用户角色*/
+
     private String role = Role.USER;
-*/
+
+    /*创建时间*/
+    private Date createTime ;
+   /* private  String description;*/
    /* *//**
      * 创建时间
-     *//*
-    private Date createTime ;
-    private  String description;*/
+     *//*/
+
+
 
     /*
     * 登录地址
@@ -55,6 +59,30 @@ public class User {
      * 用户登录凭证
      */
     private String token ;
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public String getId() {
         return id;
