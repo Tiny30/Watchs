@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 
 public class Product {
     /**
-     * 文档id
+     * 商品id
      */
     @TableId(type = IdType.ASSIGN_UUID)
     private String id;
@@ -17,7 +17,32 @@ public class Product {
     /*
     * 价格
     * */
-    private Integer price;
+    private Integer decimal;
+
+
+
+    /**
+     * 商品图片
+     * 图片URL
+     */
+    private String img;
+    private String url;
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     /*
     * 手表描述/介绍
@@ -40,13 +65,7 @@ public class Product {
         this.name = name;
     }
 
-    public Integer getPrice() {
-        return price;
-    }
 
-    public void setPrice(Integer price) {
-        this.price = price;
-    }
 
     public String getIntroduction() {
         return introduction;
@@ -54,5 +73,12 @@ public class Product {
 
     public void setIntroduction(String introduction) {
         this.introduction = introduction;
+    }
+    public Integer getDecimal() {
+        return decimal;
+    }
+
+    public void setDecimal(Integer decimal) {
+        this.decimal = decimal;
     }
 }

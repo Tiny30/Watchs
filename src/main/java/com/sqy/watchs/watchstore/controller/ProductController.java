@@ -24,13 +24,13 @@ public class ProductController extends HoshiController {
      */
     @PostMapping("/add")
     public RespData<String> add(Product product) {
-        return $(stringRespData -> {
+        return $(respData -> {
             productService.save(product);
             String id = product.getId();
             if (id == null && id.equals("")) {
-                RespData.succeed(false).msg("添加失败");
+                respData.success(false).msg("添加失败");
             } else {
-                RespData.succeed(true).data(true).msg("添加成功");
+                respData.success(true).data(id).msg("添加成功");
             }
         });
     }
@@ -62,23 +62,24 @@ public class ProductController extends HoshiController {
     public RespData<Boolean> update(Product product) {
         return $(booleanRespData -> {
             if (product.getId() == null && product.getId().equals("")) {
-                RespData.succeed(false).msg("未找到更改ID");
+                booleanRespData.success(false).msg("未找到更改ID");
             } else {
                 Product proID = productService.getById(product.getId());
                 proID.setName(product.getName());
-                proID.setPrice(product.getPrice());
+                proID.setDecimal(product.getDecimal());
                 proID.setIntroduction(product.getIntroduction());
                 productService.updateById(proID);
-                RespData.succeed(false).data(true).msg("更改成功");
+                booleanRespData.success(true).data(true).msg("更改成功");
             }
         });
     }
+    @GetMapping("/search")
     public RespData<List<Product>> search(@RequestParam(name = "search",required = false,defaultValue = "") String key,
                                           @PathVariable int pageIndex, @PathVariable int pageSize){
         return $(listRespData -> {
             $page().index(pageIndex).size(pageSize);
             List<Product> productList = productService.listSearch(key);
-            RespData.succeed(true).msg("查询成功！");
+            listRespData.success(true).data(productList);
         });
     }
 }

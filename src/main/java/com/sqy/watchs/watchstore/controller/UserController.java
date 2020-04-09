@@ -1,13 +1,16 @@
 package com.sqy.watchs.watchstore.controller;
 
+import com.sqy.watchs.watchstore.author.TokenGenerator;
 import com.sqy.watchs.watchstore.pojo.RespData;
 import com.sqy.watchs.watchstore.pojo.entity.User;
 import com.sqy.watchs.watchstore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 
 @Controller
@@ -25,13 +28,15 @@ public class UserController extends HoshiController {
      */
     @PostMapping("/add")
     public RespData<String> add(User user) {
-        return $(stringRespData -> {
+        return $(respData -> {
             userService.save(user);
             String id = user.getId();
             if (id == null && id.equals("")) {
-                RespData.succeed(false).msg("添加失败");
+                respData.success(false).data(id).msg("添加失败");
+              //  respData.succeed(false).msg("添加失败");
             } else {
-                RespData.succeed(true).data(true).msg("添加成功");
+                respData.success(true).data(id).msg("添加成功");
+
             }
         });
     }
@@ -64,12 +69,17 @@ public class UserController extends HoshiController {
     public RespData<Boolean> updatePwd(User user) {
         return $(booleanRespData -> {
             if (user.getId() == null && user.getId().equals(" ")) {
-                RespData.succeed(false).msg("未找到更新ID");
+                booleanRespData.success(false).msg("未找到更新ID");
+
             } else {
+                //根据ID查询的用户
                 User byID = userService.getById(user.getId());
-                byID.setPassword(user.getPassword());
+                //加密
+                String Pwd = user.getPassword();
+                Pwd = DigestUtils.md5DigestAsHex(user.getPassword().getBytes());
+                byID.setPassword(Pwd);
                 userService.updateById(byID);
-                RespData.succeed(false).data(true).msg("更新成功");
+                booleanRespData.success(true).data(true).msg("更新成功");
             }
         });
     }
@@ -80,15 +90,16 @@ public class UserController extends HoshiController {
      * @param user,,..
      * @return
      */
+    @PutMapping("/adress")
     public RespData<Boolean> adress(User user) {
         return $(booleanRespData -> {
             if (user.getId() == null && user.getId().equals(" ")) {
-                RespData.succeed(false).msg("未找到更新ID");
+                booleanRespData.success(false).msg("未找到更新ID");
             } else {
                 User byID = userService.getById(user.getId());
                 byID.setAdress(user.getAdress());
                 userService.updateById(byID);
-                RespData.succeed(false).data(true).msg("更新成功");
+                booleanRespData.success(true).data(true).msg("更新成功");
             }
         });
     }
@@ -109,7 +120,7 @@ public class UserController extends HoshiController {
         return $(listRespData -> {
             $page().index(pageIndex).size(pageSize);
             List<User> userList = userService.listBySearch(key);
-            RespData.succeed(true).msg("查询成功！");
+            listRespData.success(true).data(userList);
         });
     }
 
