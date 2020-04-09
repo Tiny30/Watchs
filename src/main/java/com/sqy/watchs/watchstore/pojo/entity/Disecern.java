@@ -5,50 +5,39 @@ import com.baomidou.mybatisplus.annotation.TableId;
 
 import java.util.Date;
 
-public class Order {
-
-    public interface Status{
-        String FUTURE = "future" ;//发货
-        String PAST = "past" ;//未发货
-        String NOW = "now";//正发货
-    }
-
-     /**
-     * 订单id
+public class Disecern {
+    /**
+     * ID
      */
     @TableId(type = IdType.ASSIGN_UUID)
     private String id;
+
+    /**
+     * 鉴别状态
+     */
+    public interface Status{
+        String ALREADY = "already" ;//已鉴别
+        String NO = "no" ;//未鉴别
+        String NOW = "now";//正在鉴别
+    }
+    private String status = Status.NO;
     /*
-    * 订单号码
-    * */
+     * 鉴别单号码
+     * */
     private Integer num;
     /*
-    * 订单名称
-    * */
+     * 鉴别单名称
+     * */
     private  String name;
     /*
-    * 订单描述
-    * */
+     * 鉴别单描述
+     * */
     private  String description;
     /*
-    * 创建时间
-    * */
+     * 鉴别单创建时间
+     * */
     private Date createTime ;
-    /**
-     * 发货状态，初始化为未发货
-     *
-     */
-    private String  status = Status.PAST;
-
     private User user;
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public User getUser() {
         return user;
@@ -64,6 +53,14 @@ public class Order {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Integer getNum() {

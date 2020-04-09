@@ -73,7 +73,7 @@ public class ProductController extends HoshiController {
             }
         });
     }
-    @GetMapping("/search")
+    @GetMapping("/search/{pageIndex}/{pageSize}")
     public RespData<List<Product>> search(@RequestParam(name = "search",required = false,defaultValue = "") String key,
                                           @PathVariable int pageIndex, @PathVariable int pageSize){
         return $(listRespData -> {

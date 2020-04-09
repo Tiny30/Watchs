@@ -52,7 +52,7 @@ public class OrderController extends HoshiController {
                     Order orderId = orderService.getById(order.getId());
                     orderId.setStatus(order.getStatus());
                     orderService.updateById(orderId);
-                    booleanRespData.success(true).data(true).msg("更改失败");
+                    booleanRespData.success(true).data(true).msg("更改成功");
                 }
             } else {
 
@@ -68,7 +68,7 @@ public class OrderController extends HoshiController {
      * @param pageSize
      * @return
      */
-    @GetMapping("/search")
+    @GetMapping("/search/{pageIndex}/{pageSize}")
     public RespData<List<Order>> search(@RequestParam(name = "search",required = false,defaultValue = "") String num,
                                         @PathVariable int pageIndex, @PathVariable int pageSize){
         return $(listRespData -> {

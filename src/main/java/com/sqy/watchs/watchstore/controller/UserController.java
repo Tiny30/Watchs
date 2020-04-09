@@ -33,7 +33,7 @@ public class UserController extends HoshiController {
             String id = user.getId();
             if (id == null && id.equals("")) {
                 respData.success(false).data(id).msg("添加失败");
-              //  respData.succeed(false).msg("添加失败");
+
             } else {
                 respData.success(true).data(id).msg("添加成功");
 

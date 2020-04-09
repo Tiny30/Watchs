@@ -18,7 +18,7 @@ public class OrderServiceImpl extends HoshiService<OrderDao, Order> implements O
         queryWrapper.like("num",key);
         if(needPage()){
             orderList = page(getPage(),queryWrapper).getRecords();
-            //productList = page(getPage(),queryWrapper).getRecords();
+
         }else {
             orderList = list(queryWrapper);
         }
