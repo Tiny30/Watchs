@@ -101,5 +101,7 @@ public abstract class HoshiService<M extends BaseMapper<T>, T> extends ServiceIm
         return config;
     }
 
+    public abstract List<T> search(String key) ;
 }
+
 

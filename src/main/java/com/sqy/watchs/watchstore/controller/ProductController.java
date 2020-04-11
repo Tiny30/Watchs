@@ -8,9 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/product")
 public class ProductController extends HoshiController {
     @Autowired
@@ -23,8 +24,9 @@ public class ProductController extends HoshiController {
      * @return
      */
     @PostMapping("/add")
-    public RespData<String> add(Product product) {
+    public RespData<String> add(@RequestBody Product product) {
         return $(respData -> {
+            product.setCreateTime(new Date());
             productService.save(product);
             String id = product.getId();
             if (id == null && id.equals("")) {
@@ -41,8 +43,8 @@ public class ProductController extends HoshiController {
      * @param id
      * @return
      */
-    @DeleteMapping("/del")
-    public RespData<Boolean> del(String id) {
+    @DeleteMapping("/del/{id}")
+    public RespData<Boolean> del(@PathVariable String id) {
         return $(booleanRespData -> {
             if (id == null) {
                 booleanRespData.success(false).msg("未发现该ID");
@@ -59,27 +61,28 @@ public class ProductController extends HoshiController {
      * @return
      */
     @PutMapping("/update")
-    public RespData<Boolean> update(Product product) {
+    public RespData<Boolean> update(@RequestBody Product product) {
         return $(booleanRespData -> {
             if (product.getId() == null && product.getId().equals("")) {
                 booleanRespData.success(false).msg("未找到更改ID");
             } else {
                 Product proID = productService.getById(product.getId());
                 proID.setName(product.getName());
-                proID.setDecimal(product.getDecimal());
+                proID.setPrice(product.getPrice());
                 proID.setIntroduction(product.getIntroduction());
                 productService.updateById(proID);
                 booleanRespData.success(true).data(true).msg("更改成功");
             }
         });
     }
-    @GetMapping("/search/{pageIndex}/{pageSize}")
-    public RespData<List<Product>> search(@RequestParam(name = "search",required = false,defaultValue = "") String key,
+
+    @GetMapping("/list/{pageIndex}/{pageSize}")
+    public RespData<List<Product>> list(@RequestParam(name = "search",required = false,defaultValue = "") String key,
                                           @PathVariable int pageIndex, @PathVariable int pageSize){
         return $(listRespData -> {
             $page().index(pageIndex).size(pageSize);
             List<Product> productList = productService.listSearch(key);
-            listRespData.success(true).data(productList);
+            listRespData.success(true).data(productList).msg("查询成功");
         });
     }
 }

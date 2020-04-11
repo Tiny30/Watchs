@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Calendar;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 public class TokenInterceptor implements HandlerInterceptor {
@@ -22,6 +24,12 @@ public class TokenInterceptor implements HandlerInterceptor {
     private UserService userService ;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        String requestURI = request.getRequestURI();
+        Pattern res = Pattern.compile(".*(png|jpg|jpge|bmp|gif)",Pattern.CASE_INSENSITIVE);
+        Matcher matcher = res.matcher(requestURI);
+        if(matcher.find()){
+            return true ;
+        }
         //获取请求头参数
         String token = request.getHeader("token");
         if(StringUtils.isEmpty(token)){

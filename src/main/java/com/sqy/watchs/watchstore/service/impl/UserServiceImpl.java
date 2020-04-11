@@ -40,4 +40,9 @@ public class UserServiceImpl extends HoshiService<UserDao, User> implements User
         list = list(queryWrapper);
         return list;
     }
+
+    @Override
+    public List<User> search(String key) {
+        return listBySearch(key);
+    }
 }

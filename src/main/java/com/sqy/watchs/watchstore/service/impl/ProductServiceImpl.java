@@ -24,4 +24,9 @@ public class ProductServiceImpl extends HoshiService<ProductDao, Product> implem
         }
         return productList;
     }
+
+    @Override
+    public List<Product> search(String key) {
+        return listSearch(key);
+    }
 }

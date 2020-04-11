@@ -2,8 +2,14 @@ package com.sqy.watchs.watchstore.pojo.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class User {
 
@@ -122,5 +128,29 @@ public class User {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public List<Address> getAddressList(){
+        List<Address>  addressList;
+        try{
+            addressList = new ObjectMapper().readValue(adress, new TypeReference<List<Address>>() {
+                @Override
+                public Type getType() {
+                    return super.getType();
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+            addressList = new ArrayList<>() ;
+        }
+        return addressList ;
+    }
+
+    public void setAddressList(List<Address> addressList){
+        try {
+            adress = new ObjectMapper().writeValueAsString(addressList) ;
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
     }
 }

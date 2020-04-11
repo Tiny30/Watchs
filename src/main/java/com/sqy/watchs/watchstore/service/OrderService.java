@@ -7,5 +7,5 @@ import com.sqy.watchs.watchstore.pojo.entity.Order;
 import java.util.List;
 
 public interface OrderService extends IService<Order> {
-    List<Order> listSearch(String key);
+    List<Order> listSearch(String num, String userId);
 }
